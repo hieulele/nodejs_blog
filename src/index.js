@@ -35,3 +35,5 @@ route(app);
 app.listen(port, () =>
   console.log(`Example app listen at http://localhost:${port}`)
 );
+sole.log(`Example app listen at http://localhost:${port}`),
+);
