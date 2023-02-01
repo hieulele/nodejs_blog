@@ -1,5 +1,40 @@
 @import 'variables';
 
-h1 {
-    color: $red-color;
+.card-course-item {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.card-body {
+    min-height: 230px;
+    position: relative;
+    a {
+        text-decoration: none;
+        color: #292929;
+    }
+}
+
+.course {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.card-text {
+    display: -webkit-box;
+    max-height: 3.2rem;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    line-height: 1.6rem;
+}
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 4px;
 }
