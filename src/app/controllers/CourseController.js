@@ -18,12 +18,11 @@ class CourseController {
 
   //POST /courses/store/
   store(req, res, next) {
-    const formData = req.body;
-    formData.image = `https://i.ytimg.com/vi/${formData.video}/maxresdefault.jpg`;
-    const course = new Course(formData);
+    req.body.image = `https://i.ytimg.com/vi/${req.body.video}/maxresdefault.jpg`;
+    const course = new Course(req.body);
     course
       .save()
-      .then(() => res.redirect("/"))
+      .then(() => res.redirect("/me/stored/courses"))
       .catch((error) => {});
   }
 
@@ -41,13 +40,73 @@ class CourseController {
       .then(() => res.redirect("/me/stored/courses"))
       .catch(next);
   }
+  //[PATCH] /courses/:id
+  restore(req, res, next) {
+    Course.restore({ _id: req.params.id })
+      .then(() => res.redirect("back"))
+      .catch(next);
+  }
 
   //[DELETE] /courses/:id/delete
   destroy(req, res, next) {
+    Course.delete({ _id: req.params.id })
+      .then(() => res.redirect("back"))
+      .catch(next);
+  }
+
+  //[FORCE DELETE] /courses/:id/force
+  force(req, res, next) {
     Course.deleteOne({ _id: req.params.id })
       .then(() => res.redirect("back"))
       .catch(next);
   }
+
+  // [POST] /courses/handle-form-actions
+  handleFormActions(req, res, next) {
+    switch (req.body.action) {
+      case "delete":
+        Course.delete({ _id: { $in: req.body.courseIds } })
+          .then(() => res.redirect("back"))
+          .catch(next);
+        break;
+      default:
+        res.json({ message: "Action is invalid!" });
+    }
+  }
+
+  // [POST] /courses/handle-trash-can
+  handleTrashCan(req, res, next) {
+    switch (req.body.action) {
+      case "delete":
+        Course.deleteOne({ _id: { $in: req.body.courseIds } })
+          .then(() => res.redirect("back"))
+          .catch(next);
+        break;
+      case "restore":
+        Course.restore({ _id: { $in: req.body.courseIds } })
+          .then(() => res.redirect("back"))
+          .catch(next);
+        break;
+      default:
+        res.json({ message: "Action is invalid!" });
+    }
+  }
+}
+
+module.exports = new CourseController();
+
+                    .then(() => res.redirect('back'))
+                    .catch(next);
+                break;
+            case 'restore':
+                Course.restore({ _id: { $in: req.body.courseIds } })
+                    .then(() => res.redirect('back'))
+                    .catch(next);
+                break;
+            default:
+                res.json({ message: 'Action is invalid!' });
+        }
+    }
 }
 
 module.exports = new CourseController();
