@@ -4,6 +4,8 @@ module.exports = function sortMiddleware(req, res, next) {
     type: "default",
   };
   if (req.query.hasOwnProperty("_sort")) {
+    const isValidtype = ["asc", "desc"].includes(req.query.type);
+    isValidtype ? (req.query.type = req.query.type) : (req.query.type = "desc");
     Object.assign(res.locals._sort, {
       enabled: true,
       type: req.query.type,

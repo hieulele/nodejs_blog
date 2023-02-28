@@ -34,32 +34,7 @@ app.engine(
   "hbs",
   handlebars.engine({
     extname: ".hbs",
-    helpers: {
-      sum: (a, b) => a + b,
-      sortable: (field, sort) => {
-        const sortType = field === sort.column ? sort.type : "default";
-
-        const icons = {
-          default: "fa-sharp fa-solid fa-sort",
-          asc: "fa-solid fa-arrow-down-short-wide",
-          desc: "fa-solid fa-arrow-up-short-wide",
-        };
-
-        const types = {
-          default: "desc",
-          asc: "desc",
-          desc: "asc",
-        };
-
-        const icon = icons[sortType];
-        const type = types[sortType];
-
-        return `
-                    <a href="?_sort&column=${field}&type=${type}">
-                        <i class="${icon}"></i>
-                    </a>`;
-      },
-    },
+    helpers: require("./helpers/handlebars"),
   })
 );
 
@@ -70,9 +45,4 @@ app.set("views", path.join(__dirname, "resources", "views"));
 route(app);
 
 app.listen(port, () => console.log(`App listen at http://localhost:${port}`));
-app.set('views', path.join(__dirname, 'resources', 'views'));
-
-// Routes init
-route(app);
-
-app.listen(port, () => console.log(`App listen at http://localhost:${port}`));
+app.set("views", path.join(__dirname, "resources", "views"));
